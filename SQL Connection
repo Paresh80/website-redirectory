@@ -1,0 +1,107 @@
+Db connection
+
+import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.SQLException;
+public class newdemo {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+System.out.println("-------- MySQL JDBC Connection Testing ------------");
+        try {
+                Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+                System.out.println("Where is your MySQL JDBC Driver?");
+                e.printStackTrace();
+                return;
+        }
+
+        System.out.println("MySQL JDBC Driver Registered!");
+        Connection connection = null;
+
+        try {
+connection = DriverManager
+           .getConnection("jdbc:mysql://172.16.12.23:3306/T24","root", "root");
+
+        } catch (SQLException e) {
+                System.out.println("Connection Failed! Check output console");
+                e.printStackTrace();
+                return;
+        }
+
+        if (connection != null) {
+            System.out.println("You made it, take control your database now!");
+        } else {
+                System.out.println("Failed to make connection!");
+	}
+	}
+}
+
+ddl
+import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.SQLException;
+public class seconddemo {
+   // JDBC driver name and database URL
+   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+   static final String DB_URL = "jdbc:mysql://172.16.12.23/T24";
+
+   //  Database credentials
+   static final String USER = "root";
+   static final String PASS = "root";
+   
+   public static void main(String[] args) {
+   Connection conn = null;
+   Statement stmt = null;
+   try{
+      //STEP 2: Register JDBC driver
+      Class.forName("com.mysql.jdbc.Driver");
+
+      //STEP 3: Open a connection
+      System.out.println("Connecting to a selected database...");
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      System.out.println("Connected database successfully...");
+      
+      //STEP 4: Execute a query
+      System.out.println("Creating table in given database...");
+      stmt = conn.createStatement();
+      
+      String sql = "CREATE TABLE REGISTRATION22 " +
+                   "(id INTEGER not NULL, " +
+                   " first VARCHAR(255), " + 
+                   " last VARCHAR(255), " + 
+                   " age INTEGER, " + 
+                   " PRIMARY KEY ( id ))"; 
+
+      stmt.executeUpdate(sql);
+      System.out.println("Created table in given database...");
+      String sql1 = "INSERT INTO REGISTRATION22 VALUES(10,'SNEHAL','SHINDE',35)";
+      stmt.executeUpdate(sql1);
+   }catch(SQLException se){
+      //Handle errors for JDBC
+      se.printStackTrace();
+   }catch(Exception e){
+      //Handle errors for Class.forName
+      e.printStackTrace();
+   }finally{
+      //finally block used to close resources
+      try{
+         if(stmt!=null)
+            conn.close();
+      }catch(SQLException se){
+      }// do nothing
+      try{
+         if(conn!=null)
+            conn.close();
+      }catch(SQLException se){
+         se.printStackTrace();
+      }//end finally try
+   }//end try
+   System.out.println("Goodbye!");
+}//end main
+}//end JDBCExample
